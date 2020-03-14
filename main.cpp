@@ -32,11 +32,28 @@ class Robot
 {
     private:
         double x, y, th;
+
+        // 動作モデルのパラメータ
+        double a1 = 0.001;
+        double a2 = 0.5;
+        double a3 = 0.001;
+        double a4 = 0.5;
+        double a5 = 0.001;
+        double a6 = 0.5;
+
     public:
+        Robot();        // デフォルトコンストラクタ
         void set(double x_, double y_, double th_);
         void move(double v, double w);
         void print();
 };
+
+Robot::Robot()
+{
+    x = 0.0;
+    y = 0.0;
+    th= 0.0;
+}
 
 void Robot::set(double x_, double y_, double th_)
 {
@@ -47,13 +64,6 @@ void Robot::set(double x_, double y_, double th_)
 
 void Robot::move(double v, double w)
 {
-    double a1 = 0.001;
-    double a2 = 0.5;
-    double a3 = 0.001;
-    double a4 = 0.5;
-    double a5 = 0.001;
-    double a6 = 0.5;
-
     double dt = 0.01;
     double v_ = v + sample(a1 * v * v + a2 * w * w);
     double w_ = w + sample(a3 * v * v + a4 * w * w);
@@ -81,9 +91,6 @@ int main(int argc, char *argv[])
 
     int numRobot = 100;                     // シミュレーションするロボットの数
     std::vector<Robot> rb(numRobot);
-    for (int i = 0; i < numRobot; i++) {
-        rb[i].set(0.0, 0.0, 0.0);
-    }
 
     int numLoop = 3000;                     // シミュレーション時間（繰り返し数）
     int skipNum = 300;
