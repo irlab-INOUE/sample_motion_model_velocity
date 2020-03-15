@@ -3,6 +3,13 @@
 
 #include <opencv2/opencv.hpp>
 
+struct RGB
+{
+    int R;
+    int G;
+    int B;
+};
+
 class Drawer
 {
     private:
@@ -13,11 +20,13 @@ class Drawer
         cv::Mat img;
 
     public:
-        Drawer();                                   // デフォルトコンストラクタ
-        template <typename T> void drawing(T &a);   // 引数の座標に点を描く
-        void show();                                // imgをウィンドウ表示する
-        void imgWrite();                            // img をファイルに書き出す
+        Drawer();                               // デフォルトコンストラクタ
+        template <typename T> 
+            void drawing(T &a, RGB color);      // 引数の座標に点を描く
+        void show();                            // imgをウィンドウ表示する
+        void imgWrite();                        // img をファイルに書き出す
 
+        static RGB RGBcolor(int, int, int);     // 外部から色を指定するときに使う
 };
 
 // デフォルトコンストラクタ
@@ -37,17 +46,20 @@ Drawer::Drawer()
 }
 
 // 点を描画する
-// NOTE:
+// 点座標と色を指定する
+// NOTE1:
 //  引数のオブジェクトは何らかのクラスのインスタンスである．
 //  それは x, y の値を得るメソッド getX(), getY() を持っている．
+// NOTE2:
+//  色の指定は自前のRGBcolor()メソッドを通して指定する
 template <typename T>
-void Drawer::drawing(T &a)
+void Drawer::drawing(T &a, RGB color)
 {
     int ix = a.getX() / csize + IMG_ORIGIN_X;
     int iy =-a.getY() / csize + IMG_ORIGIN_Y;
 
     if (ix >= 0 && ix < IMG_WIDTH && iy >= 0 && iy < IMG_HIGHT) 
-        img.at<cv::Vec3b>(iy, ix) = cv::Vec3b(200, 0, 0);
+        img.at<cv::Vec3b>(iy, ix) = cv::Vec3b(color.B, color.G, color.R);
 }
 
 
@@ -64,4 +76,14 @@ void Drawer::imgWrite()
     cv::imwrite("result.png", img);
 }
 
+// 内部処理用に色を指定するための関数
+RGB Drawer::RGBcolor(int val1, int val2, int val3)
+{
+    RGB tmp;
+    tmp.R = val1;
+    tmp.G = val2;
+    tmp.B = val3;
+
+    return tmp;
+}
 #endif
