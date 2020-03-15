@@ -20,6 +20,7 @@ class Drawer
 
 };
 
+// デフォルトコンストラクタ
 Drawer::Drawer()
 {
     IMG_WIDTH = 600;
@@ -35,6 +36,10 @@ Drawer::Drawer()
     cv::line(img, cv::Point(IMG_ORIGIN_X, 0), cv::Point(IMG_ORIGIN_X, IMG_HIGHT), cv::Scalar(0, 0, 0), 1, cv::LINE_8, 0);
 }
 
+// 点を描画する
+// NOTE:
+//  引数のオブジェクトは何らかのクラスのインスタンスである．
+//  それは x, y の値を得るメソッド getX(), getY() を持っている．
 template <typename T>
 void Drawer::drawing(T &a)
 {
@@ -46,12 +51,14 @@ void Drawer::drawing(T &a)
 }
 
 
+// 描画する
 void Drawer::show()
 {
     cv::imshow("Robot", img);
     cv::waitKey(5);
 }
 
+// ファイルに保存する
 void Drawer::imgWrite()
 {
     cv::imwrite("result.png", img);
