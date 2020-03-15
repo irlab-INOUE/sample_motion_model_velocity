@@ -62,6 +62,8 @@ void Robot::move(double v, double w, double dt)
     double w_ = w + sample(a3 * v * v + a4 * w * w);
     double r_ =     sample(a5 * v * v + a6 * w * w);
 
+    if (fabs(w_) < 1e-6) w_ = 1e-6;
+
     double x2 = x - v_ / w_ * sin(th) + v_ / w_ * sin(th + w_ * dt);
     double y2 = y + v_ / w_ * cos(th) - v_ / w_ * cos(th + w_ * dt);
     double th2= th + w_ * dt + r_ * dt;
