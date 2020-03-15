@@ -14,10 +14,11 @@ class Drawer
         cv::Mat img;
 
     public:
-        Drawer();
         void drawing(Robot &rb);
-        void show();
-        void imgWrite();
+        Drawer();                                   // デフォルトコンストラクタ
+        void show();                                // imgをウィンドウ表示する
+        void imgWrite();                            // img をファイルに書き出す
+
 };
 
 Drawer::Drawer()
