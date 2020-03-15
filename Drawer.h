@@ -14,8 +14,8 @@ class Drawer
         cv::Mat img;
 
     public:
-        void drawing(Robot &rb);
         Drawer();                                   // デフォルトコンストラクタ
+        template <typename T> void drawing(T &a);   // 引数の座標に点を描く
         void show();                                // imgをウィンドウ表示する
         void imgWrite();                            // img をファイルに書き出す
 
@@ -36,14 +36,16 @@ Drawer::Drawer()
     cv::line(img, cv::Point(IMG_ORIGIN_X, 0), cv::Point(IMG_ORIGIN_X, IMG_HIGHT), cv::Scalar(0, 0, 0), 1, cv::LINE_8, 0);
 }
 
-void Drawer::drawing(Robot &rb) 
+template <typename T>
+void Drawer::drawing(T &a)
 {
-    int ix = rb.getX() / csize + IMG_ORIGIN_X;
-    int iy =-rb.getY() / csize + IMG_ORIGIN_Y;
+    int ix = a.getX() / csize + IMG_ORIGIN_X;
+    int iy =-a.getY() / csize + IMG_ORIGIN_Y;
 
     if (ix >= 0 && ix < IMG_WIDTH && iy >= 0 && iy < IMG_HIGHT) 
         img.at<cv::Vec3b>(iy, ix) = cv::Vec3b(200, 0, 0);
 }
+
 
 void Drawer::show()
 {

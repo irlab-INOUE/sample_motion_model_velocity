@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
         }
         if (i % skipNum == 0) {                     // 途中経過を表示
             for (int k = 0; k < numRobot; k++) {
-                dr.drawing(rb[k]);
+                dr.drawing<Robot>(rb[k]);
             }
             dr.show();
         }
