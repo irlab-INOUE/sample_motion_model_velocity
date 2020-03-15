@@ -17,6 +17,7 @@ class Drawer
         Drawer();
         void drawing(Robot &rb);
         void show();
+        void imgWrite();
 };
 
 Drawer::Drawer()
@@ -58,6 +59,11 @@ void Drawer::show()
 {
     cv::imshow("Robot", img);
     cv::waitKey(5);
+}
+
+void Drawer::imgWrite()
+{
+    cv::imwrite("result.png", img);
 }
 
 #endif
