@@ -3,13 +3,6 @@
 
 #include <opencv2/opencv.hpp>
 
-struct RGB
-{
-    int R;
-    int G;
-    int B;
-};
-
 class Drawer
 {
     private:
@@ -25,11 +18,9 @@ class Drawer
     public:
         Drawer();                               // デフォルトコンストラクタ
         template <typename T> 
-            void drawing(T &a, RGB color);      // 引数の座標に点を描く
+            void drawing(T &a, cv::Vec3b color);// 引数の座標に点を描く
         void show();                            // imgをウィンドウ表示する
         void imgWrite();                        // img をファイルに書き出す
-
-        static RGB RGBcolor(int, int, int);     // 外部から色を指定するときに使う
 };
 
 // デフォルトコンストラクタ
@@ -59,13 +50,13 @@ Drawer::Drawer()
 // NOTE2:
 //  色の指定は自前のRGBcolor()メソッドを通して指定する
 template <typename T>
-void Drawer::drawing(T &a, RGB color)
+void Drawer::drawing(T &a, cv::Vec3b color)
 {
     int ix = a.getX() / csize + IMG_ORIGIN_X;
     int iy =-a.getY() / csize + IMG_ORIGIN_Y;
 
     if (ix >= 0 && ix < IMG_WIDTH && iy >= 0 && iy < IMG_HIGHT) 
-        img.at<cv::Vec3b>(iy, ix) = cv::Vec3b(color.B, color.G, color.R);
+        img.at<cv::Vec3b>(iy, ix) = color;
 }
 
 
@@ -82,14 +73,4 @@ void Drawer::imgWrite()
     cv::imwrite("result.png", img);
 }
 
-// 内部処理用に色を指定するための関数
-RGB Drawer::RGBcolor(int val1, int val2, int val3)
-{
-    RGB tmp;
-    tmp.R = val1;
-    tmp.G = val2;
-    tmp.B = val3;
-
-    return tmp;
-}
 #endif

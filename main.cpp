@@ -9,7 +9,7 @@
  *  OpenCVを使って画面描画するように機能追加
  * 2020.3.15
  *  点座標の描画を関数テンプレートに修正し，柔軟性をもたせた
- *  描画時の色を指定するための型RGBを追加した
+ *  描画時の色を指定するようにした
  */
 
 #include <iostream>
@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
         }
         if (i % skipNum == 0) {                     // 途中経過を表示
             for (int k = 0; k < numRobot; k++) {
-                dr.drawing<Robot>(rb[k], Drawer::RGBcolor(0, 0, 180));
+                dr.drawing<Robot>(rb[k], cv::Vec3b(180, 0, 0));
             }
             dr.show();
         }
