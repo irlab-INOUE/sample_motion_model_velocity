@@ -17,6 +17,9 @@ class Drawer
         int IMG_ORIGIN_X, IMG_ORIGIN_Y;     // 描画ウィンドウの原点
         double csize;                       // 解像度 [m/pixel]
 
+        cv::Scalar XaxisColor;
+        cv::Scalar YaxisColor;
+
         cv::Mat img;
 
     public:
@@ -41,8 +44,11 @@ Drawer::Drawer()
     img = cv::Mat(cv::Size(IMG_WIDTH, IMG_HIGHT), CV_8UC3, cv::Scalar(182, 182, 182));
 
     // 座標軸
-    cv::line(img, cv::Point(0, IMG_ORIGIN_Y), cv::Point(IMG_WIDTH, IMG_ORIGIN_Y), cv::Scalar(0, 0, 0), 1, cv::LINE_8, 0);
-    cv::line(img, cv::Point(IMG_ORIGIN_X, 0), cv::Point(IMG_ORIGIN_X, IMG_HIGHT), cv::Scalar(0, 0, 0), 1, cv::LINE_8, 0);
+    XaxisColor = cv::Scalar(0, 0, 0);
+    YaxisColor = cv::Scalar(0, 0, 0);
+
+    cv::line(img, cv::Point(0, IMG_ORIGIN_Y), cv::Point(IMG_WIDTH, IMG_ORIGIN_Y), XaxisColor, 1, cv::LINE_8, 0);
+    cv::line(img, cv::Point(IMG_ORIGIN_X, 0), cv::Point(IMG_ORIGIN_X, IMG_HIGHT), YaxisColor, 1, cv::LINE_8, 0);
 }
 
 // 点を描画する
