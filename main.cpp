@@ -43,6 +43,7 @@ int main(int argc, char *argv[])
         }
     }
 
+    dr.imgWrite();
     cv::waitKey(0);     // 何かキーを押すまで待つ
 
     return 0;
