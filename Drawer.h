@@ -22,11 +22,11 @@ class Drawer
 
 Drawer::Drawer()
 {
-    IMG_WIDTH = 800;
+    IMG_WIDTH = 600;
     IMG_HIGHT = 600;
     IMG_ORIGIN_X = IMG_WIDTH / 2;
     IMG_ORIGIN_Y = IMG_HIGHT * (1.0 - 1.0/ 6);
-    csize = 0.0125/3;
+    csize = 0.005;
 
     img = cv::Mat(cv::Size(IMG_WIDTH, IMG_HIGHT), CV_8UC3, cv::Scalar(182, 182, 182));
 
