@@ -21,6 +21,11 @@ class Drawer
             void drawing(T &a, cv::Vec3b color);// 引数の座標に点を描く
         void show();                            // imgをウィンドウ表示する
         void imgWrite();                        // img をファイルに書き出す
+
+        // 便利な描画関数
+        void line(cv::Point p1, cv::Point p2);                  // 2点を結ぶ直線 ピクセル座標系
+        void line(double x1, double y1, double x2, double y2);  // 実座標系, 境界処理有り
+        void line(cv::Point p1, double angle);                  // 通過点と傾きを与えた直線
 };
 
 // デフォルトコンストラクタ
@@ -73,4 +78,97 @@ void Drawer::imgWrite()
     cv::imwrite("result.png", img);
 }
 
+// 2点を結ぶ直線
+void Drawer::line(cv::Point p1, cv::Point p2)
+{
+    cv::line(img, p1, p2, cv::Scalar(150, 0, 0), 1, cv::LINE_8, 0);
+}
+
+void Drawer::line(double x1, double y1, double x2, double y2)
+{
+    // アスキー出版局 入門グラフィックス に詳解がある
+    // window境界を実座標に変換する
+    double cx1 = csize * (          - IMG_ORIGIN_X);
+    double cx2 = csize * (IMG_WIDTH - IMG_ORIGIN_X);
+    double cy1 =-csize * (IMG_HIGHT - IMG_ORIGIN_Y);
+    double cy2 =-csize * (         - IMG_ORIGIN_Y);
+
+    // 平行・垂直の場合の処理
+    if (x1 == x2) {
+        if (y1 < cy1) y1 = cy1;
+        else if (y1 > cy2) y1 = cy2;
+
+        if (y2 < cy1) y2 = cy1;
+        else if (y2 > cy2) y2 = cy2;
+    } else if (y1 == y2) {
+        if (x1 < cx1) x1 = cx1;
+        else if (x1 > cx2) x1 = cx2;
+
+        if (x2 < cx1) x2 = cx1;
+        else if (x2 > cx2) x2 = cx2;
+    }
+        
+    while (1) {
+        char c1 = 0b0000;
+        char c2 = 0b0000;
+        if (y1 > cy2) c1 |= 0b1000;
+        if (y1 < cy1) c1 |= 0b0100;
+        if (x1 > cx2) c1 |= 0b0010;
+        if (x1 < cx1) c1 |= 0b0001;
+
+        if (y2 > cy2) c2 |= 0b1000;
+        if (y2 < cy1) c2 |= 0b0100;
+        if (x2 > cx2) c2 |= 0b0010;
+        if (x2 < cx1) c2 |= 0b0001;
+
+        if (c1 == 0b0000 && c2 == 0b0000) {
+            int px1 = x1 / csize + IMG_ORIGIN_X;
+            int py1 =-y1 / csize + IMG_ORIGIN_Y;
+            int px2 = x2 / csize + IMG_ORIGIN_X;
+            int py2 =-y2 / csize + IMG_ORIGIN_Y;
+            line(cv::Point(px1, py1), cv::Point(px2, py2));
+            break;
+        } else if ((c1 & c2) != 0b0000) {
+            std::cerr << "線分はウィンドウの外です\n";
+            break;
+        }
+
+        char c;
+        if (c1 == 0b0000) c = c2;
+        else              c = c1;
+
+        double x, y;
+        if ((c & 0b0001) != 0) {
+            // 左端
+            y = y1 + (y2 - y1) / (x2 - x1) * (cx1 - x1);
+            x = cx1;
+        } else if ((c & 0b0010) != 0) {
+            // 右端
+            y = y1 + (y2 - y1) / (x2 - x1) * (cx2 - x1);
+            x = cx2;
+        } else if ((c & 0b0100) != 0) {
+            // 下端
+            x = x1 + (x2 - x1) / (y2 - y1) * (cy1 - y1);
+            y = cy1;
+        } else if ((c & 0b1000) != 0) {
+            // 上端
+            x = x1 + (x2 - x1) / (y2 - y1) * (cy2 - y1);
+            y = y2;
+        }
+        if (c == c1) {
+            x1 = x; y1 = y;
+        } else {
+            x2 = x; y2 = y;
+        }
+    }
+}
+
+// 通過点と傾きを与えられた直線
+void Drawer::line(cv::Point p1, double angle)
+{
+    // 与えられたパラメータにより描かれる直線とウィンドウとの交点を算出する
+    // アスキー出版局 入門グラフィックス に詳解がある
+    // 今の場合，端点座標は不明なので，可能な最大最小の座標を仮定する
+    ;  
+}
 #endif
