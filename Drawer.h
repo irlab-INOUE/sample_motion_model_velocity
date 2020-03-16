@@ -25,7 +25,7 @@ class Drawer
         // 便利な描画関数
         void line(cv::Point p1, cv::Point p2);                  // 2点を結ぶ直線 ピクセル座標系
         void line(double x1, double y1, double x2, double y2);  // 実座標系, 境界処理有り
-        void line(cv::Point p1, double angle);                  // 通過点と傾きを与えた直線
+        void line(double x1, double y1, double angle);          // 通過点と傾きを与えた直線
 };
 
 // デフォルトコンストラクタ
@@ -91,7 +91,7 @@ void Drawer::line(double x1, double y1, double x2, double y2)
     double cx1 = csize * (          - IMG_ORIGIN_X);
     double cx2 = csize * (IMG_WIDTH - IMG_ORIGIN_X);
     double cy1 =-csize * (IMG_HIGHT - IMG_ORIGIN_Y);
-    double cy2 =-csize * (         - IMG_ORIGIN_Y);
+    double cy2 =-csize * (          - IMG_ORIGIN_Y);
 
     // 平行・垂直の場合の処理
     if (x1 == x2) {
@@ -128,10 +128,7 @@ void Drawer::line(double x1, double y1, double x2, double y2)
             int py2 =-y2 / csize + IMG_ORIGIN_Y;
             line(cv::Point(px1, py1), cv::Point(px2, py2));
             break;
-        } else if ((c1 & c2) != 0b0000) {
-            std::cerr << "線分はウィンドウの外です\n";
-            break;
-        }
+        } 
 
         char c;
         if (c1 == 0b0000) c = c2;
@@ -153,7 +150,7 @@ void Drawer::line(double x1, double y1, double x2, double y2)
         } else if ((c & 0b1000) != 0) {
             // 上端
             x = x1 + (x2 - x1) / (y2 - y1) * (cy2 - y1);
-            y = y2;
+            y = cy2;
         }
         if (c == c1) {
             x1 = x; y1 = y;
@@ -164,11 +161,15 @@ void Drawer::line(double x1, double y1, double x2, double y2)
 }
 
 // 通過点と傾きを与えられた直線
-void Drawer::line(cv::Point p1, double angle)
+void Drawer::line(double x, double y, double angle)
 {
     // 与えられたパラメータにより描かれる直線とウィンドウとの交点を算出する
-    // アスキー出版局 入門グラフィックス に詳解がある
     // 今の場合，端点座標は不明なので，可能な最大最小の座標を仮定する
-    ;  
+    double x1 = x + 99999.0 * cos(angle);
+    double y1 = y + 99999.0 * sin(angle);
+    double x2 = x - 99999.0 * cos(angle);
+    double y2 = y - 99999.0 * sin(angle);
+    std::cerr << x1 << " " << y1 << " " << x2 << " " << y2 << "\n";
+    line(x1, y1, x2, y2);  
 }
 #endif
