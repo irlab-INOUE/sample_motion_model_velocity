@@ -135,19 +135,19 @@ void Drawer::line(double x1, double y1, double x2, double y2)
         else              c = c1;
 
         double x, y;
-        if ((c & 0b0001) != 0) {
+        if ((c & 0b0001) != 0b0000) {
             // 左端
             y = y1 + (y2 - y1) / (x2 - x1) * (cx1 - x1);
             x = cx1;
-        } else if ((c & 0b0010) != 0) {
+        } else if ((c & 0b0010) != 0b0000) {
             // 右端
             y = y1 + (y2 - y1) / (x2 - x1) * (cx2 - x1);
             x = cx2;
-        } else if ((c & 0b0100) != 0) {
+        } else if ((c & 0b0100) != 0b0000) {
             // 下端
             x = x1 + (x2 - x1) / (y2 - y1) * (cy1 - y1);
             y = cy1;
-        } else if ((c & 0b1000) != 0) {
+        } else if ((c & 0b1000) != 0b0000) {
             // 上端
             x = x1 + (x2 - x1) / (y2 - y1) * (cy2 - y1);
             y = cy2;
