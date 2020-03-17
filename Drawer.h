@@ -18,14 +18,15 @@ class Drawer
     public:
         Drawer();                               // デフォルトコンストラクタ
         template <typename T> 
-            void drawing(T &a, cv::Vec3b color);// 引数の座標に点を描く
-        void show();                            // imgをウィンドウ表示する
-        void imgWrite();                        // img をファイルに書き出す
+            void drawing(T &a, cv::Vec3b color);    // 引数の座標に点を描く
+        void show();                                // imgをウィンドウ表示する
+        void imgWrite();                            // img をファイルに書き出す
 
         // 便利な描画関数
-        void line(cv::Point p1, cv::Point p2);                  // 2点を結ぶ直線 ピクセル座標系
-        void line(double x1, double y1, double x2, double y2);  // 実座標系, 境界処理有り
-        void line(double x1, double y1, double angle);          // 通過点と傾きを与えた直線
+        void line(cv::Point p1, cv::Point p2);                      // 2点を結ぶ直線 ピクセル座標系
+        void line(double x1, double y1, double x2, double y2);      // 実座標系, 境界処理有り
+        void line(double x1, double y1, double angle);              // 通過点と傾きを与えた直線
+        void lineRA(double x1, double y1, double r, double angle);  // 通過点と方向と長さを与えられた直線
 };
 
 // デフォルトコンストラクタ
@@ -171,5 +172,13 @@ void Drawer::line(double x, double y, double angle)
     double y2 = y - 99999.0 * sin(angle);
     std::cerr << x1 << " " << y1 << " " << x2 << " " << y2 << "\n";
     line(x1, y1, x2, y2);  
+}
+
+// 通過点と方向と長さを与えられた直線
+void Drawer::lineRA(double x1, double y1, double r, double angle)
+{
+    double x2 = x1 + r * cos(angle);
+    double y2 = y1 + r * sin(angle);
+    line(x1, y1, x2, y2);
 }
 #endif
