@@ -6,21 +6,25 @@
 class Drawer
 {
     private:
-        int IMG_WIDTH, IMG_HIGHT;           // 描画ウィンドウのサイズ
+        int IMG_WIDTH,    IMG_HIGHT;        // 描画ウィンドウのサイズ
         int IMG_ORIGIN_X, IMG_ORIGIN_Y;     // 描画ウィンドウの原点
         double csize;                       // 解像度 [m/pixel]
 
         cv::Scalar XaxisColor;
         cv::Scalar YaxisColor;
+        cv::Scalar line_color;                   // 何かを描画するときの現在の設定色
 
         cv::Mat img;
 
     public:
-        Drawer();                               // デフォルトコンストラクタ
+        Drawer();                                   // デフォルトコンストラクタ
         template <typename T> 
             void drawing(T &a, cv::Vec3b color);    // 引数の座標に点を描く
         void show();                                // imgをウィンドウ表示する
         void imgWrite();                            // img をファイルに書き出す
+
+        // 描画するための補助機能
+        void setLineColor(cv::Scalar c);                // 描画するための色をセットする
 
         // 便利な描画関数
         void line(cv::Point p1, cv::Point p2);                      // 2点を結ぶ直線 ピクセル座標系
@@ -39,6 +43,9 @@ Drawer::Drawer()
     csize = 0.005;
 
     img = cv::Mat(cv::Size(IMG_WIDTH, IMG_HIGHT), CV_8UC3, cv::Scalar(182, 182, 182));
+
+    // 描画する色のデフォルト値
+    line_color = cv::Scalar(200, 0, 0);
 
     // 座標軸
     XaxisColor = cv::Scalar(0, 0, 0);
@@ -65,6 +72,11 @@ void Drawer::drawing(T &a, cv::Vec3b color)
         img.at<cv::Vec3b>(iy, ix) = color;
 }
 
+// 描画するための色をセットする
+void Drawer::setLineColor(cv::Scalar c)
+{
+    line_color = c;
+}
 
 // 描画する
 void Drawer::show()
@@ -82,7 +94,7 @@ void Drawer::imgWrite()
 // 2点を結ぶ直線
 void Drawer::line(cv::Point p1, cv::Point p2)
 {
-    cv::line(img, p1, p2, cv::Scalar(150, 0, 0), 1, cv::LINE_8, 0);
+    cv::line(img, p1, p2, line_color, 1, cv::LINE_8, 0);
 }
 
 void Drawer::line(double x1, double y1, double x2, double y2)
