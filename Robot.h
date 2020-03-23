@@ -24,12 +24,12 @@ class Robot
         double x, y, th;
 
         // 動作モデルのパラメータ
-        double a1 = 0.0001;
-        double a2 = 0.001;
-        double a3 = 0.0001;
-        double a4 = 0.5;
-        double a5 = 0.0001;
-        double a6 = 0.5;
+        double a1 = 0.1;
+        double a2 = 0.01;
+        double a3 = 0.001;
+        double a4 = 0.01;
+        double a5 = 0.05;
+        double a6 = 0.01;
 
     public:
         Robot();        // デフォルトコンストラクタ
