@@ -5,7 +5,7 @@
 
 int main(int argc, char* argv[])
 {
-    std::vector<Robot> rb(10000);
+    std::vector<Robot> rb(1000);
     Drawer dr;
 
     dr.setCsize(0.015);
@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
     dr.setImgHight(10.0);
     dr.setOriginXfromLeft(10.0);
     dr.setOriginYfromBottom(1.0);
-    dr.includeImage(-10, 9, "logo.jpeg");
+    dr.includeImage(-10, 9, "../fig/logo.jpeg");
     dr.text(-10, 7, "K.INOUE");
     dr.show();
 
