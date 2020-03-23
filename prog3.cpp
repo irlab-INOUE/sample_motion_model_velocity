@@ -71,5 +71,6 @@ int main(int argc, char* argv[])
     dr.setLineColor(cv::Scalar(0, 0, 200));
     dr.text(0.5, 4, "Finish!");
     dr.show(0);
+    dr.imgWrite();                            // img をファイルに書き出す
     return 0;
 }
