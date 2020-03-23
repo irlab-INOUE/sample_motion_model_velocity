@@ -4,6 +4,10 @@ project(sample_motion_model_velocity)
 
 find_package (OpenCV REQUIRED)
 
-add_executable(main main.cpp)
+add_executable(prog1 prog1.cpp)
+add_executable(prog2 prog2.cpp)
+add_executable(prog3 prog3.cpp)
 
-target_link_libraries(main ${OpenCV_LIBRARIES})
+target_link_libraries(prog1 ${OpenCV_LIBRARIES})
+target_link_libraries(prog2 ${OpenCV_LIBRARIES})
+target_link_libraries(prog3 ${OpenCV_LIBRARIES})
